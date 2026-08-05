@@ -20,6 +20,26 @@ User Request
 
 Planner Agent
 
+↓
+
+Research Agent
+
+↓
+
+Travel Recommendation Generator
+
+↓
+
+Security Guardrails
+
+↓
+
+Response Validation
+
+↓
+
+Final Response
+
 
 The workflow is orchestrated using LangGraph, allowing nodes to exchange information through a shared state object and enabling conditional transitions when required.
 
