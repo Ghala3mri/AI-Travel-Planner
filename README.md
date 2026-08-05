@@ -12,7 +12,7 @@ This capstone project integrates all course deliverables:
 * Noura Alfaadhel — AI/Agent Lead: ReAct reasoning implementation and tool integration (Tavily Search).
 * Ghala Alamri — Graph-Based Orchestration: LangGraph StateGraph workflow, conditional routing, budget validation, and replanner retry loops.
 *  Sarah Al-Sa'ed — Multi-Agent System & Role Specialization: Specialized agent roles (Planner, Researcher, Budget Reviewer) and structured message passing.
-* Ghaida Alwasel — Security, Guardrails & DevOps: Input prompt-injection protection, output validation, logging, state persistence, and HITL nodes.
+* Ghaida Alwassel — Security, Guardrails & DevOps: Input prompt-injection protection, output validation, logging, state persistence, and HITL nodes.
 * Joud Aldawsari — Documentation & Integration Lead: Pipeline execution logs, integration testing, and final reports.
 
 ---
