@@ -169,14 +169,23 @@ Execution events are logged to monitor:
 
 # Project Structure
 AI-Travel-Planner/
+
 │
+
 ├── app.py
+
 ├── requirements.txt
+
 ├── README.md
+
 ├── TECHNICAL_DOCUMENTATION.md
+
 ├── src/
+
 ├── data/
+
 ├── docs/
+
 └── notebooks/
 
 ---
