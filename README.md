@@ -31,7 +31,7 @@ This capstone project integrates all course deliverables:
 ## 🚀 How to Run
 
 1. Open the notebook in Google Colab.
-2. Add your API Keys (`GEMINI_API_KEY`, `TAVILY_API_KEY`) under Colab Secrets (🔑).
+2. Add your API Keys (`GEMINI_API_KEY`, `TAVILY_API_KEY`,`GROQ_API_KEY`) under Colab Secrets (🔑).
 3. Select Runtime -> Run all.
 
 ---
