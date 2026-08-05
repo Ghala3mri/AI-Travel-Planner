@@ -39,5 +39,10 @@ This capstone project integrates all course deliverables:
 ## 🎓 Program Attribution
 
 * Program: Advanced Agentic AI Systems Engineering
+* Session date :2 Aug 2026 - 6 Aug 2026
+* Trainer :Mohammed Albelad
+* Supervisor : Dr.Sultan AlSarraa
 * Delivered via: SDAIA Academy & Learning Space
 * GitHub Reference: [SDAIA Academy on GitHub](https://github.com/SDAIAAcademy)
+
+
