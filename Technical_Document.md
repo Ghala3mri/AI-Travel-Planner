@@ -15,7 +15,9 @@ The application follows a graph-based architecture where multiple specialized ag
 Workflow:
 
 User Request
+
 ↓
+
 Planner Agent
 
 
