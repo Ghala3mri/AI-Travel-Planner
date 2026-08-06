@@ -1,218 +1,261 @@
 # Technical Documentation
-
-# AI Travel Planner
-
-## Project Overview
-
-AI Travel Planner is a multi-agent AI system developed for the SDAIA Academy Advanced Agentic AI Systems Engineering Capstone. The system assists users in generating personalized travel plans by coordinating multiple AI agents through a graph-based workflow.
+## AI Travel Planner – Advanced Agentic AI System
 
 ---
 
-# Architecture
+# 1. System Overview
 
-The application follows a graph-based architecture where multiple specialized agents collaborate using a shared state.
+The AI Travel Planner is an agentic AI application that generates personalized travel itineraries based on user preferences such as destination, budget, and travel duration.
 
-Workflow:
-
-User Request
-
-↓
-
-Planner Agent
-
-↓
-
-Research Agent
-
-↓
-
-Travel Recommendation Generator
-
-↓
-
-Security Guardrails
-
-↓
-
-Response Validation
-
-↓
-
-Final Response
-
-
-The workflow is orchestrated using LangGraph, allowing nodes to exchange information through a shared state object and enabling conditional transitions when required.
+The system uses a LangGraph-based workflow composed of multiple nodes representing different stages of reasoning and execution. It integrates Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), and Human-in-the-Loop (HITL) approval to produce reliable travel plans.
 
 ---
 
-# Agents
+# 2. Architecture
 
-## 1. Planner Agent
+The system follows a graph-based architecture implemented with LangGraph.
 
-Responsibilities:
-
-- Understand user requirements.
-- Create an execution plan.
-- Delegate tasks to the appropriate agents.
-
-Input:
-- User travel request.
-
-Output:
-- Structured travel plan.
-
----
-
-## 2. Research Agent
-
-Responsibilities:
-
-- Retrieve destination-related information.
-- Collect travel recommendations.
-- Gather hotel and transportation details.
-
-Input:
-- Travel plan from Planner Agent.
-
-Output:
-- Structured travel information.
+```
+            User Request
+                  │
+                  ▼
+        Planner / ReAct Agent
+                  │
+                  ▼
+        Retrieve Travel Knowledge
+                  │
+                  ▼
+      Generate Travel Itinerary
+                  │
+                  ▼
+      Human Approval (HITL)
+          │             │
+   Approved         Rejected
+      │                 │
+      ▼                 ▼
+ Booking Simulation   Cancel Request
+      │
+      ▼
+     End
+```
 
 ---
 
-## 3. Recommendation Agent
+# 3. Graph Nodes
 
-Responsibilities:
+## Node 1 — Planner Agent
 
-- Combine collected information.
-- Generate the final travel itinerary.
-- Format the response.
+**Purpose**
 
-Input:
-- Research results.
+Receives the user's travel request and creates an initial travel itinerary.
 
-Output:
-- Personalized travel itinerary.
+**Input**
 
----
-
-# Graph Components
-
-## Nodes
-
-- User Input
-- Planner Agent
-- Research Agent
-- Recommendation Agent
-- Security Guardrails
-- Response Validator
-- Final Output
-
-## Edges
-
-- User Input → Planner Agent
-- Planner Agent → Research Agent
-- Research Agent → Recommendation Agent
-- Recommendation Agent → Guardrails
-- Guardrails → Validator
-- Validator → Final Output
-
-Conditional edges are used to repeat or terminate execution based on validation results.
-
----
-
-# Shared State
-
-The system maintains a shared state containing:
-
-- User request
 - Destination
 - Budget
-- Travel dates
-- Agent outputs
-- Validation status
-- Final itinerary
+- Duration
 
-This state is updated throughout the workflow by each agent.
+**Output**
 
----
-
-# Tools
-
-The project integrates external tools and APIs to support travel planning, retrieve relevant information, and generate intelligent responses through Large Language Models.
+- Draft itinerary
 
 ---
 
-# Security & Guardrails
+## Node 2 — Retrieval (RAG)
 
-The project includes:
+**Purpose**
 
-- Input validation
-- Prompt injection detection
-- Output validation
-- Logging and monitoring
+Retrieves travel-related information from the vector database to improve itinerary quality.
 
-These mechanisms improve system reliability and response quality.
+**Technologies**
 
----
-
-# Observability
-
-Execution events are logged to monitor:
-
-- Agent execution
-- Tool calls
-- Processing steps
-- Errors
-- Workflow status
+- ChromaDB
+- Embedding Model
 
 ---
 
-# Project Structure
+## Node 3 — Human-in-the-Loop (HITL)
+
+**Purpose**
+
+Pauses workflow execution and requests human approval before continuing.
+
+Implemented using:
+
+- LangGraph Interrupt
+- Command Resume
+
+Possible outcomes:
+
+- APPROVED
+- REJECTED
+
+---
+
+## Node 4 — Booking Simulation
+
+Executed only after approval.
+
+Simulates:
+
+- Flight booking
+- Hotel booking
+- Confirmation generation
+
+---
+
+## Node 5 — Cancellation
+
+Executed when the itinerary is rejected.
+
+Terminates the workflow safely.
+
+---
+
+# 4. State Management
+
+The application stores workflow state using LangGraph checkpoints.
+
+State variables include:
+
+- user_query
+- generated_itinerary
+- approval_status
+- final_result
+
+Checkpoint persistence is implemented using SQLite.
+
+Database:
+
+```
+travel_planner_checkpoint.db
+```
+
+This allows interrupted executions to resume without losing progress.
+
+---
+
+# 5. Human-in-the-Loop Workflow
+
+The workflow pauses execution using LangGraph's interrupt() function.
+
+The user reviews the itinerary and chooses one of two actions:
+
+- Approve
+- Reject
+
+The graph resumes using:
+
+```
+Command(resume="approve")
+```
+
+or
+
+```
+Command(resume="reject")
+```
+
+---
+
+# 6. Technologies Used
+
+| Component | Technology |
+|------------|------------|
+| Workflow Engine | LangGraph |
+| LLM Framework | LangChain |
+| Vector Database | ChromaDB |
+| Programming Language | Python |
+| Notebook Environment | Google Colab |
+| Persistence | SQLite |
+| Version Control | GitHub |
+| Deployment Artifact | Docker |
+
+---
+
+# 7. Project Structure
+
+```
 AI-Travel-Planner/
 
-│
-
-├── app.py
-
-├── requirements.txt
-
-├── README.md
-
-├── TECHNICAL_DOCUMENTATION.md
-
-├── src/
-
-├── data/
-
-├── docs/
-
-└── notebooks/
+│── project.ipynb
+│── README.md
+│── Technical_Document.md
+│── Dockerfile
+│── docker-compose.yml
+│── requirements.txt
+│── travel_planner_checkpoint.db
+```
 
 ---
 
-# Technologies
+# 8. Deployment
 
-- Python
-- LangGraph
-- LangChain
-- FastAPI
-- SQLite
-- OpenAI API
+The repository includes production deployment artifacts.
 
----
+Files:
 
-# Future Improvements
+- Dockerfile
+- docker-compose.yml
+- requirements.txt
 
-- Persistent workflow checkpointing.
-- Human-in-the-loop approval.
-- Cloud deployment using Docker.
-- Additional travel service integrations.
-- Enhanced monitoring and analytics.
+These enable containerized execution of the application.
 
 ---
 
-# Training Program
+# 9. Configuration
 
-Developed as part of:
+Required Python packages are listed in:
 
-SDAIA Academy – Advanced Agentic AI Systems Engineering Capstone
+```
+requirements.txt
+```
+
+Main libraries include:
+
+- langgraph
+- langchain
+- chromadb
+- openai
+- google-generativeai
+- pandas
+- numpy
+
+---
+
+# 10. Execution Flow
+
+1. User submits a travel request.
+2. Planner Agent generates an itinerary.
+3. RAG retrieves supporting travel information.
+4. Workflow pauses for human approval.
+5. User approves or rejects the itinerary.
+6. Approved requests simulate booking.
+7. Rejected requests terminate the workflow.
+8. Workflow state is saved automatically using SQLite checkpoints.
+
+---
+
+# 11. Production Readiness
+
+The project includes production-oriented features:
+
+- Persistent SQLite checkpoints
+- Human-in-the-Loop approval
+- Docker deployment artifacts
+- GitHub version control
+- Modular graph architecture
+- Reproducible environment using requirements.txt
+
+---
+
+# 12. Future Improvements
+
+Potential enhancements include:
+
+- Real flight and hotel booking APIs
+- Live weather integration
+- Google Maps support
+- Multi-agent collaboration
+- Cloud deployment on Azure or AWS
+- Redis or PostgreSQL checkpoint storage
