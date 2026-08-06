@@ -1,8 +1,12 @@
-langchain
 langgraph
-langchain-groq
-langchain-google-genai
-langchain-core
+langchain
 langchain-community
-tavily-python
+openai
+google-generativeai
+chromadb
+faiss-cpu
 pandas
+numpy
+jupyter
+nbconvert
+ipykernel

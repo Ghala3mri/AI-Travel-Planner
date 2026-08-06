@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  ai-travel-planner:
+    build: .
+    container_name: ai_travel_planner
+    command: jupyter nbconvert --to notebook --execute --inplace project.ipynb
